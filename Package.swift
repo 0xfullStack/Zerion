@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "Zerion",
+    platforms: [
+        .iOS(.v13)
+    ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -12,15 +15,18 @@ let package = Package(
             targets: ["Zerion"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/Modularize-Packages/Infura.git", branch: "master"),
+        .package(name: "SocketIO", url: "https://github.com/socketio/socket.io-client-swift", .revision("a1ed825835a2d8c2555938e96557ccc05e4bebf3")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Zerion",
-            dependencies: []),
+            dependencies: [
+                .byName(name: "Infura"),
+                .byName(name: "SocketIO")
+            ]),
         .testTarget(
             name: "ZerionTests",
             dependencies: ["Zerion"]),
