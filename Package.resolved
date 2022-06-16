@@ -42,7 +42,7 @@
       "location" : "https://github.com/Modularize-Packages/ReactiveX.git",
       "state" : {
         "branch" : "main",
-        "revision" : "5b81c5c6487664af3ae85aebfc38e989bd0e2731"
+        "revision" : "b641c853aadbc12e525a3d25715f7f5667287342"
       }
     },
     {
@@ -60,7 +60,7 @@
       "location" : "https://github.com/Modularize-Packages/Serialization.git",
       "state" : {
         "branch" : "main",
-        "revision" : "6399f4439e572680673214ff831ca7f727d583d8"
+        "revision" : "98b42949bcc5fe4bb73c140d77159d5e4ac9af06"
       }
     },
     {
