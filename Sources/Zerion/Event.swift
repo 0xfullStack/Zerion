@@ -76,26 +76,4 @@ public enum Event {
             return "received address \(scope)"
         }
     }
-
-//    func decode<T: Decodable>(data: [Any]) throws -> T {
-//        guard let dic = data.first as? [String: [String: Any]] else {
-//            throw Web3Error.wrongJsonFromat(nil)
-//        }
-//
-//        switch self {
-//        case .positions(_):
-//            guard let dic = dic["payload"]?["positions"],
-//                  let dic = dic as? [String: Any],
-//                  let array = dic["positions"] as? [Any] else {
-//                throw Web3Error.wrongJsonFromat(nil)
-//            }
-//            do {
-//                let jsonData = try JSONSerialization.data(withJSONObject: array)
-//                let objects = try JSONDecoder().decode(T.self, from: jsonData)
-//                return objects
-//            } catch {
-//                throw Web3Error.wrongJsonFromat(error)
-//            }
-//        }
-//    }
 }
