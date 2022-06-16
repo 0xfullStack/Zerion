@@ -24,7 +24,7 @@ public final class Zerion {
     private lazy var reachability: Reachability? = {
         Reachability()
     }()
-    public lazy var reachabilitySignal: Observable<Bool> = {
+    private lazy var reachabilitySignal: Observable<Bool> = {
         reachability?.rx.isReachable ?? .never()
     }()
     private lazy var mannager: SocketManager = {
