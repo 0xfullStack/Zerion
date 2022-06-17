@@ -25,7 +25,7 @@ final class ZerionTests: XCTestCase {
                 guard let jsonData = try? JSONSerialization.data(withJSONObject: array) else {
                     return
                 }
-                if let objects = try? JSONDecoder().decode([Position].self, from: jsonData) {
+                if let objects = try? JSONDecoder().decode([Zerion.Position].self, from: jsonData) {
                     print(objects)
                 }
             })
