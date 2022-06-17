@@ -78,41 +78,7 @@ public final class Zerion {
             }
     }
     
-    public func off(_ event: Event) -> Observable<Void> {
-        fatalError("Not implemented!!")
+    public func off() {
+        proxy.disconnected()
     }
 }
-//
-//extension Zerion {
-//    func on<T: Decodable>(event: Event) -> Observable<T> {
-//        return Observable.create { [weak self] observer in
-//            guard let self = self else {
-//                return Disposables.create()
-//            }
-//            self.socketManager
-//                .socket(forNamespace: event.namespace.rawValue)
-//                .on(event.keyPath) { data , ack in
-//                    guard let dic = data.first as? [String: [String: Any]] else {
-//                        return
-//                    }
-//
-//                    switch event {
-//                    case .positions(_):
-//                        guard let dic = dic["payload"]?["positions"],
-//                              let dic = dic as? [String: Any],
-//                              let array = dic["positions"] as? [Any] else {
-//                            return
-//                        }
-//                        do {
-//                            let jsonData = try JSONSerialization.data(withJSONObject: array)
-//                            let objects = try JSONDecoder().decode(T.self, from: jsonData)
-//                            observer.onNext(objects)
-//                        } catch {
-//                            return
-//                        }
-//                    }
-//                }
-//            return Disposables.create()
-//        }
-//    }
-//}
