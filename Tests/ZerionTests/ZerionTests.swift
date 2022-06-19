@@ -12,7 +12,7 @@ final class ZerionTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Subscribe address's positions failure")
         
         zerion
-            .on(.positions(address: "0x6079433E43Bf3244Bceef85a2FBfbfFa6864C82c"))
+            .subscribe(.positions(address: "0x6079433E43Bf3244Bceef85a2FBfbfFa6864C82c"))
             .subscribe(onNext: { data in
                 guard let dic = data.first as? [String: [String: Any]] else {
                     return
@@ -30,6 +30,8 @@ final class ZerionTests: XCTestCase {
                 }
             })
             .disposed(by: bag)
+        
+        zerion.connect()
         
         wait(for: [expectation], timeout: TimeInterval(10000))
     }

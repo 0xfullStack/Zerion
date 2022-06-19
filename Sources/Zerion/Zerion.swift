@@ -20,7 +20,7 @@ public final class Zerion {
 
     private let url = "wss://api-v4.zerion.io"
     private let apiKey = "Demo.ukEVQp6L5vfgxcz4sBke7XvS873GMYHy"
-    private let bag = DisposeBag()
+    private var reachabilityBag = DisposeBag()
     private lazy var reachability: Reachability? = {
         Reachability()
     }()
@@ -42,13 +42,10 @@ public final class Zerion {
         )
     }()
 
-    public init() {
-        
-        subscribeReachability()
-        
-    }
+    public init() {}
     
     private func subscribeReachability() {
+        releaseBag()
         let reachable = reachabilitySignal.filter { $0 }.startWith(true).map { _ in () }
         let enterForeground = UIApplication.rx.willEnterForeground.asObservable().startWith(())
         Observable
@@ -58,16 +55,20 @@ public final class Zerion {
                 guard !connectStatus else { return }
                 self.proxy.connectIfNeed()
             })
-            .disposed(by: bag)
+            .disposed(by: reachabilityBag)
     }
     
-    public func on(_ event: Event) -> Observable<[Any]> {
+    private func releaseBag() {
+        reachabilityBag = DisposeBag()
+    }
+    
+    public func subscribe(_ event: Event) -> Observable<[Any]> {
         connectStatus
             .filter { $0 }
             .flatMapLatest { [weak self] connected -> Observable<Void> in
                 guard let self = self else { return .never() }
                 return self.proxy.rx.emit(
-                    event.action.rawValue,
+                    Event.Action.subscribe.rawValue,
                     SocketIODataItem(id: UUID(), scope: event.scope, payload: event.payload)
                 )
             }
@@ -78,7 +79,25 @@ public final class Zerion {
             }
     }
     
-    public func off() {
+    public func unsubscribe(_ event: Event) -> Observable<Void> {
+        connectStatus
+            .filter { $0 }
+            .flatMapLatest { [weak self] connected -> Observable<Void> in
+                guard let self = self else { return .never() }
+                return self.proxy.rx.emit(
+                    Event.Action.unsubscribe.rawValue,
+                    SocketIODataItem(id: UUID(), scope: event.scope, payload: event.payload)
+                )
+            }
+    }
+    
+    public func disconnect() {
+        reachabilityBag = DisposeBag()
         proxy.disconnected()
+    }
+    
+    public func connect() {
+        reachabilityBag = DisposeBag()
+        proxy.connectIfNeed()
     }
 }
